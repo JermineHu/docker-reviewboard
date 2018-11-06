@@ -29,7 +29,7 @@ services:
     restart: always
   reviewboard:
     container_name: reviewboard
-    image: easybe/alpine-reviewboard
+    image: jermine/reviewboard
     restart: always
     links:
       - mysql:db
@@ -45,6 +45,43 @@ services:
     volumes:
       - reviewboard:/var/www
 ```
+
+or used External database for postgresql :
+
+```yml
+
+version: '3'
+services:
+  memcached:
+    container_name: memcached
+    image: memcached:alpine
+    restart: always
+  reviewboard:
+    container_name: reviewboard
+    image: jermine/reviewboard
+    restart: always
+    links:
+      - memcached
+    ports:
+      - "8080:8000"
+    environment:
+      - DB_HOST: 192.168.1.19
+      - DB_TYPE: postgresql
+      - DB_PORT: 2379
+      - DB_NAME: reviewboard
+      - DB_USER: Jermine
+      - DB_PASSWORD: 123456
+      - RB_COMPANY: KangPany
+      - RB_ADMIN: KangPany.admin
+      - RB_ADMIN_PASSWORD: Jermine.KangPany.com
+      - RB_ADMIN_EMAIL: admin@KangPany.com
+      - UWSGI_PROCESSES: 10
+    volumes:
+      - /data/reviewboard:/var/www
+
+
+```
+
 
 ### Set an .env file for container like below codes:
 ```sh
