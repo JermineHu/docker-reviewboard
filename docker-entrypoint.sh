@@ -3,8 +3,6 @@ set -e
 
 RB_ROOT=${RB_ROOT:-/var/www/reviewboard}
 
-wait-for db:$DB_PORT -t 60
-
 if [ -e $RB_ROOT/conf/settings_local.py ]; then
     rb-site upgrade $RB_ROOT
 else
